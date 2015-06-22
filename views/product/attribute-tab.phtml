@@ -1,0 +1,62 @@
+
+<?php if (CoreHelper::isOnlyPS15()) { ?>
+    <style>
+        .col-lg-8 {
+            margin-bottom: 10px;
+        }
+        .col-lg-8 p {
+            margin-left: 255px;
+        }
+    </style>
+<?php } ?>
+<?php $blockTitle = L::t("Attribute information"); ?>
+
+<?php if (CoreHelper::isPS16()) { ?>
+    <?php echo HtmlHelper::blockStart(CoreHelper::isPS16() ? $blockTitle : "", ""); ?>
+<?php } ?>
+<?php if (CoreHelper::isOnlyPS15()) { ?>
+    <h4><?php echo $blockTitle ?></h4>
+<?php } ?>
+<div id="prestashop-prestaattributestab">
+    <div class="form-group ">
+        <label for="prestaattributes[attribute_mpn]" class="control-label col-lg-3"><?php echo L::t("MPN (Manufacturer part number)"); ?></label>
+        <div class="col-lg-8">
+            <input name="prestaattributes[attribute_mpn]" value="<?php echo $attributesData['mpn'] ?>" type="text"/>
+        </div>
+    </div>
+    <div class="form-group ">
+        <label for="prestaattributes[attribute_isbn]" class="control-label col-lg-3"><?php echo L::t("ISBN"); ?></label>
+        <div class="col-lg-8">
+            <input name="prestaattributes[attribute_isbn]" value="<?php echo $attributesData['isbn'] ?>" type="text"/>
+        </div>
+    </div>
+
+    <?php if (CoreHelper::isPS15()) { ?>
+
+        <div class="panel-footer">
+            <button type="button" id="submitPrestaAttributesData" name="submitPrestaAttributesData" class="btn btn-default pull-right" onclick="onSaveCustomDataPrestaAttributes()"><i class="process-icon-save"></i> Save</button>
+
+            <div id="prestaattributes-save-result" class="pull-right" style="display: none; margin-right: 10px;"></div>
+        </div>
+
+        <?php echo HtmlHelper::blockEnd(); ?>
+
+    <?php } ?>
+</div>
+<script>
+    function onSaveCustomDataPrestaAttributes() {
+        var serialized = jQuery("#prestashop-prestaattributestab input, #prestashop-prestaattributestab textarea, input[name=id_product]").serialize();
+        jQuery("#prestaattributes-save-result").hide();
+        jQuery.post("<?php echo UrlHelper::getPrestaUrl('AdminPrestaAttributes'); ?>", serialized, function( data ) {
+            console.debug(data);
+            if (data.success) {
+                console.debug(data.message);
+                jQuery("#prestaattributes-save-result").html(data.message);
+                jQuery("#prestaattributes-save-result").show();
+            } else {
+                alert('Error save data');
+            }
+
+        }, "json");
+    }
+</script>

@@ -1,0 +1,6 @@
+.*
+*~
+var/cache/*
+var/tmp
+var/tmp/request.log
+var/profiler
